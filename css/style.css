@@ -207,6 +207,7 @@ select {
     padding: 10px;
     box-sizing: border-box;
 	white-space: nowrap;
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 .inDevGameStatus.downed{
@@ -888,6 +889,7 @@ select {
     font-size: 16px;
     color: rgba(0,0,0,0.5);
     cursor: pointer;
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 
@@ -927,7 +929,7 @@ select {
 
 .potentialWorkerName {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .potentialWorkerLevel {
@@ -953,6 +955,7 @@ select {
     display: inline-block;
     margin-top: 10px;
     left: 50%;
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     background-color: white;
     border-radius: 21px;
@@ -961,6 +964,7 @@ select {
     box-shadow: 0 0 0 1px #dcdcdc;
     text-align: center;
     cursor: pointer;
+    -webkit-transition: all 0.3s;
     transition: all 0.3s;
 }
 .inspectPc:hover{

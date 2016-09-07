@@ -19,6 +19,14 @@ select:focus{
     outline: none;
 }
 
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
 
 
 .headerWrap {
@@ -68,7 +76,7 @@ select:focus{
 .rightWrap {
 	position: relative;
     /*z-index: 99;*/
-	width: calc(100% - 400px);
+	width: calc(100% - 402px);
     min-width: 880px;
     margin: 0 auto;
 	height: 100%;
@@ -105,7 +113,8 @@ select:focus{
 	display: none;
     background: white;
     box-shadow: 0 0 0 1px #dcdcdc;
-    padding: 10px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .hidden {
@@ -129,6 +138,9 @@ select:focus{
     display: inline-block;
     padding: 10px;
     box-sizing: border-box;
+}
+.potentialWorker b{
+    font-weight: 700;
 }
 .potentialWorker:nth-child(4n + 0){
     margin-right: 0;
@@ -197,6 +209,13 @@ select:focus{
 
 .newGameExpenses {
 	display: inline-block;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #fb4f4f;
+}
+.newGameExpenses:before{
+    content:"$";
 }
 
 .inDevGameStatus {
@@ -206,7 +225,7 @@ select:focus{
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
-    width: calc(100% - 410px);
+    width: calc(100% - 402px);
     height: 100px;
     background: white;
     box-shadow: 0 0 0 1px #dcdcdc;
@@ -625,25 +644,25 @@ select:focus{
 }
 
 .priceOption {
-	display: inline-block;
+	/*display: inline-block;
 	outline: 1px black solid;
 	margin-right: 2px;
 	padding: 4px;
 	text-align: center;
 	cursor: pointer;
 	-webkit-transition: all 0.3s;
-	transition: all 0.3s;
+	transition: all 0.3s;*/
 }
 
-.selectedPrice {
-	outline: 1px #fb4f4f solid;
+.priceOption.selectedPrice {
+	background: #fb4f4f;
 	z-index: 100;
-	margin-right: 10px;
-	margin-left: 8px;
-	-webkit-transform-origin: center center;
+    color: white;
+    box-shadow: 0 0 0 0 #fb4f4f;
+	/*-webkit-transform-origin: center center;
 	transform-origin: center center;
 	-webkit-transform: scale(1.2, 1.2);
-	transform: scale(1.2, 1.2);
+	transform: scale(1.2, 1.2);*/
 }
 
 .finishedGameWrap {
@@ -662,26 +681,39 @@ select:focus{
 	color: grey;
 }
 
-.sizeOption {
+.sizeOption, .priceOption {
 	display: inline-block;
-	outline: 1px black solid;
 	margin-right: 2px;
-	padding: 4px;
+	padding: 5px;
+    font-size: 12px;
+    width: 57px;
+    float: left;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(0,0,0,0.7);
+    box-shadow: inset -1px 0 0 0 #dcdcdc, inset 0 1px 0 #dcdcdc, inset 0 -1px 0 #dcdcdc;
 	text-align: center;
 	cursor: pointer;
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 }
+.sizeOption:not(.selectedSize):hover{
+    background: rgba(0,0,0,0.05);
+}
+.priceOption:not(.selectedPrice):hover{
+    background: rgba(0,0,0,0.05);
+}
 
 .selectedSize {
-	outline: 1px #6cc0e5 solid;
+	background: #6cc0e5;
 	z-index: 100;
-	margin-right: 10px;
-	margin-left: 8px;
-	-webkit-transform-origin: center center;
+    box-shadow: 0 0 0 0;
+    color: white;
+	/*-webkit-transform-origin: center center;
 	transform-origin: center center;
 	-webkit-transform: scale(1.2, 1.2);
-	transform: scale(1.2, 1.2);
+	transform: scale(1.2, 1.2);*/
 }
 
 .mainWorkerLevel {
@@ -811,6 +843,10 @@ select:focus{
     background: white;
     white-space: nowrap;
     color: rgba(0,0,0,0.5);
+    transition: all 0.3s;
+}
+.expMenuItem:hover{
+    background: rgba(0,0,0,0.05);
 }
 
 .rightSlideIns {
@@ -1001,6 +1037,7 @@ input:focus{
     letter-spacing: 2px;
     background: #dcdcdc;
     float: left;
+    width: 80px;
     padding: 5px 10px;
 }
 .divLabel input{
@@ -1008,6 +1045,7 @@ input:focus{
     border: 0;
     box-shadow: 0 0 0 1px #dcdcdc;
     padding: 5px;
+    width: 190px;
     font-size: 12px;
 }
 
@@ -1016,6 +1054,7 @@ input:focus{
     padding: 4px;
     border: 0;
     height: auto;
+    width: 200px;
     box-shadow: 0 0 0 1px #dcdcdc;
 }
 .divLabel option{
@@ -1029,3 +1068,69 @@ input:focus{
     display: block;
     margin-bottom: 5px;
 }
+
+.newGameSize label, .newGamePrice label{
+    font-size: 12px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    background: #dcdcdc;
+    float: left;
+    width: 80px;
+    padding: 5px 10px;
+}
+
+.newGameSize {
+    display: block;
+    margin-bottom: 5px;
+}
+.newGameSize:after{
+    content:"";
+    clear:both;
+}
+
+.newGamePrice {
+    display: block;
+}
+
+.estExpanses {
+    position: relative;
+    display: block;
+    margin-top: 50px;
+}
+.estExpanses:after{
+    content: "";
+    position: absolute;
+    width: 300px;
+    left: 0;
+    top: -20px;
+    border-top: 1px dashed #dcdcdc;
+}
+.estExpanses label{
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.startDev {
+    padding: 20px 0;
+    width: 300px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: white;
+    color: rgba(0,0,0,0.7);
+    cursor: pointer;
+    box-shadow: 0 0 0 1px #dcdcdc;
+    transition: all 0.3s;
+}
+.startDev:hover{
+    background: rgba(0,0,0,0.05);
+}
+
+option:selected{
+    background: pink;
+}
+

@@ -271,6 +271,7 @@
 						totalSalary += workers[i].salary;
 					}
 					if(totalSalary){
+                        $.playSound("../res/monthlypayment");
                         console.log("yolo");
 						$(".notif").text("-$" + totalSalary).fadeIn(100);
 						$(".noteWrapper").addClass("tgld");

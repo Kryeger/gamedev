@@ -21,9 +21,9 @@
 
 	var engines = [{
 		name: "No Engine",
-		minArt: 2000,
-		minAudio: 2000,
-		minCode: 2000
+		art: 2000,
+		audio: 2000,
+		code: 2000
 	}];
 
 	var newEngine = {
@@ -132,14 +132,17 @@
 				break;
 			case "engine":
 				for(i = 0; i < workers.length; i++){
-					if(chance.weighted([0, 1], [9, 1]))
-						researchBits += workers[i].basePoints/10;
+					if(chance.weighted([0, 1], [75, 25])){//TODO: this chance should be influencec by a workers individual productivity
+						researchBits += Math.floor(workers[i].level/10);
+						updateHeader();
+						$(".inDevGameReq").text(" Requirments: " + inDevEngine.cost + " RP (" + (inDevEngine.cost - researchBits) + " remaining)");
+					}
 				}
 				break;
 			case "feature":
 				for(i = 0; i < workers.length; i++){
 					if(chance.weighted([0, 1], [9, 1]))
-						researchBits += workers[i].basePoints/10;
+						researchBits += workers[i].level/10;
 				}
 				break;
 			case "none": break;
@@ -232,13 +235,14 @@
 								inDevGame.progress = 100;
 								break;
 							}
-							gatherBits("game");
+							gatherBits(inDevType);
 							updateHeader();
 							moveProgressBar(inDevGame.progress);
 							console.log(inDevGame.progress);
 							break;
 						case "engine":
-							inDevEngine.progress = (devTime * 100) / inDevEngine.neededTime;
+							gatherBits(inDevType);
+							inDevEngine.progress = (researchBits * 100) / inDevEngine.cost;
 							moveProgressBar(inDevEngine.progress);
 							break;
 						case "feature":
@@ -248,6 +252,18 @@
 							break;
 					}
 
+				}
+				//TODO: at == 100, time should pause until release is pressed
+				if(inDevEngine.progress >= 100){
+					$(".finishedGameWrap").fadeIn(100);
+					$(".finishedGameName").html(inDevEngine.name + "<br>(Engine)");
+					$(".inDevGameName").text("");
+					engines[engines.length] = inDevEngine;
+					inDevEngine = {};
+					inDev = 0;
+					inDevType = "none";
+					$(".inDevGameReq").empty();
+					moveProgressBar(0);
 				}
 				if(inDevGame.progress == 100){
 					$(".finishedGameWrap").fadeIn(100);
@@ -271,8 +287,11 @@
 						totalSalary += workers[i].salary;
 					}
 					if(totalSalary){
+<<<<<<< HEAD
                         $.playSound("../res/monthlypayment");
                         console.log("yolo");
+=======
+>>>>>>> origin/master
 						$(".notif").text("-$" + totalSalary).fadeIn(100);
 						$(".noteWrapper").addClass("tgld");
 						setTimeout(function(){
@@ -298,7 +317,6 @@
 			$(".currentWorkers").empty();
 
 			for(i = 0; i < workers.length; i++){
-				/*$(".currentWorkers").append("<div class='potentialWorker mainWorker'><div class='mainWorkerLevel'>" + workers[i].level + "</div><div class='fa fa-times' id='fireWorker' data-id='" + i + "' title='Fire'></div><div class='potentialWorkerAvatar' style='background-color:" + workers[i].avatar + "'></div><div class='potentialWorkerInfo'>" + workers[i].firstName + " " + workers[i].lastName + "<br>" + workers[i].age + " (" + workers[i].gender + ")" + "<br>Coding: " + workers[i].codePoints + "<br>Art: " + workers[i].artPoints + "<br>Audio: " + workers[i].audioPoints + "<br>Salary: $" + workers[i].salary + "<br><button class='inspectPc' data-workerPcId='" + i + "'>Inspect PC</button></div><div class='newPoints'><div class='newCode' data-id='" + i + "'></div><div class='newArt' data-id='" + i + "'></div><div class='newAudio' data-id='" + i + "'></div></div></div>");*/
                 $(".currentWorkers").append('<div class="potentialWorker mainWorker"><i class="material-icons" id="fireWorker" data-id="'+ i +'" title="Fire">close</i><div class="potentialWorkerAvatar" style="background-color:' + workers[i].avatar + '"></div><div class="potentialWorkerName">'+ workers[i].firstName +' '+ workers[i].lastName +'</div><div class="potentialWorkerLevel">LEVEL ' + workers[i].level +'</div><div class="potentialWorkerInfo">' + workers[i].age + ' ('+ workers[i].gender +')<br>Coding: '+ workers[i].codePoints +'<br>Art: '+ workers[i].artPoints +'<br>Audio: '+ workers[i].audioPoints +'<br>Salary: $'+ workers[i].salary +'<br><button class="inspectPc" data-workerpcid="'+ i +'">Inspect PC</button></div><div class="newPoints"><div class="newCode" data-id="'+ i +'"></div><div class="newArt" data-id="'+ i +'"></div><div class="newAudio" data-id="'+ i +'"></div></div></div>');
 			}
 		});
@@ -351,10 +369,6 @@
 					$(".newGameTopicsList").append("<option value='" + i + "'>" + topics[i].name + "</option>");
 				}
 			}
-			/*for(i = 1; i < features.length; i++){   //skips first feature
-                var xx = featuresDb({id: features[i]}).get()
-                $(".newGameFeaturesWrap").append("<input type='checkbox' value='" + i + "'>" + xx[0].name + "<br>");
-            }*/
 			for(i = 0; i < platforms.length; i++){
 				var xx = platformsDb({id: platforms[i]}).get();
 				$(".newGamePlatforms").append("<option value='" + i + "'>" + xx[0].name + "</option><br>");
@@ -520,10 +534,11 @@
 			if(areEqual(featuresDb({id: newEngCode}).get()[0].techLevel, featuresDb({id: newEngGraph}).get()[0].techLevel, featuresDb({id: newEngAudio}).get()[0].techLevel, featuresDb({id: newEngArt}).get()[0].techLevel) && newEngine.name != ""){
 				inDevEngine = newEngine;
 				inDevEngine.progress = 0;
+				inDevEngine.cost = newEngine.code + newEngine.graphics + newEngine.audio + newEngine.art;
 				inDev = 1;
 				inDevType = "engine";
 				$(".inDevGameName").text(newEngine.name + (" (Engine)"));
-				$(".inDevGameReq").text(" Requirments: " + inDevEnginecost + " RP");
+				$(".inDevGameReq").text(" Requirments: " + inDevEngine.cost + " RP");
 				moveProgressBar(0);
 			}
 		});
@@ -587,7 +602,7 @@
 				};
 			}
 			for(i = 0; i < 6; i++){
-				$(".potentialWorkersList").append("<div class='potentialWorker'><div class='potentialWorkerAvatar' style='background-color:" + potentialWorkers[i].avatar + "'></div><div class='potentialWorkerInfo'>" + potentialWorkers[i].firstName + " " + potentialWorkers[i].lastName + "<br>" + potentialWorkers[i].age + " (" + potentialWorkers[i].gender + ")" + "<br>Coding: " + potentialWorkers[i].codePoints + "<br>Art: " + potentialWorkers[i].artPoints + "<br>Audio: " + potentialWorkers[i].audioPoints + "<br>Salary: $" + potentialWorkers[i].salary + "<br><button class='recruitButton' data-recruitId='" + i + "'>Recruit</button></div></div>");
+				$(".potentialWorkersList").append("<div class='potentialWorker'><div class='potentialWorkerAvatar' style='background-color:" + potentialWorkers[i].avatar + "'></div><div class='potentialWorkerInfo'><b>" + potentialWorkers[i].firstName + " " + potentialWorkers[i].lastName + "<br>" + potentialWorkers[i].age + " (" + potentialWorkers[i].gender + ")" + "<br>Coding: " + potentialWorkers[i].codePoints + "<br>Art: " + potentialWorkers[i].artPoints + "<br>Audio: " + potentialWorkers[i].audioPoints + "<br>Salary: $" + potentialWorkers[i].salary + "<br><button class='recruitButton' data-recruitId='" + i + "'>Recruit</button></div></div>");
 			}
 		});
 

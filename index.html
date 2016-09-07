@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Game Dev</title>
+	<meta name="description" content="  ">
+	<link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jStorage/0.4.12/jstorage.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/2.5.0/math.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/taffydb/2.7.2/taffy-min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.0.3/chance.min.js"></script>
+    <script type="text/javascript" src="js/func.js"></script>
+    <script type="text/javascript" src="db/features.js"></script>
+    <script type="text/javascript" src="db/platforms.js"></script>
+    <script type="text/javascript" src="db/hardware.js"></script>
+
+</head>
+
+<body>
+
+    <div class="headerWrap">
+        <div class="headerRight">
+        <div class="money headerItem">
+            $<span>20,000</span>
+        </div>
+            <div class="codeBits headerItem"><span>0</span><i class="material-icons">code</i>
+        </div>
+            <div class="artBits headerItem"><span>0</span><i class="material-icons">brush</i>
+        </div>
+            <div class="audioBits headerItem"><span>0</span><i class="material-icons">audiotrack</i>
+        </div>
+            <div class="researchBits headerItem"><span>0</span><i class="material-icons">search</i>
+        </div>
+        </div>
+        
+        <div class="timeWrap">
+            <i class="material-icons">date_range</i><div class="time">03.05.1970</div>
+            <div id="timeProgress">
+                <div id="timeBar" style="width: 20%;"></div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="noteWrapper">
+        <div class="noteWrapperTop">
+            <div class="notif">$12,345</div>
+            <div class="notifBell"><i class="material-icons">notifications_active</i></div>
+        </div>
+        <div class="noteWrapperBottom"> Monthly Payments </div>
+
+    </div>
+
+    <div class="leftWrap">
+        <button class="main leftButton"><i class="material-icons">language</i><div class="main expMenuItem">LinkedOut</div></button>
+        <button class="newGame leftButton"><i class="material-icons">fiber_new</i><div class="newGame expMenuItem">New Game</div></button>
+        <button class="research leftButton"><i class="material-icons">search</i><div class="research expMenuItem">Research</div></button>
+        <button class="upgrades leftButton"><i class="material-icons">settings</i><div class="upgrades expMenuItem">Upgrades</div></button>
+        <button class="techLab leftButton"><i class="material-icons">router</i><div class="techLab expMenuItem">Tech Lab</div></button>
+        <button class="recruit leftButton"><i class="material-icons">group_add</i><div class="recruit expMenuItem">Recruit</div></button>
+        <button class="shop leftButton"><i class="material-icons">shopping_cart</i><div class="shop expMenuItem">Shop</div></button>
+        <button class="stats leftButton"><i class="material-icons">show_chart</i><div class="stats expMenuItem">Stats</div></button>
+        
+        <button class="expandLeftMenu leftButton toBottom"><i class="material-icons">keyboard_arrow_right</i></button>
+    </div>
+    <div class="rightSlideIns">
+        <div class="biggestHits rightSlideIn">
+            <i class="material-icons rightSlideInArrow">keyboard_arrow_left</i>
+            <div class="rightSlideInTitle"><b>Biggest Hits</b></div>
+            <ol class="rightSlideInOl">
+                <li>IDLE (1.000.000 copies)</li>
+                <li>CSGO IDLE (1.000.000 copies)</li>
+                <li>Game Dev (1.000.000 copies)</li>
+            </ol>
+        </div>
+        <div class="currentSales rightSlideIn">
+            <i class="material-icons rightSlideInArrow">keyboard_arrow_left</i>
+            <div class="rightSlideInTitle"><b>Current Sales</b></div>
+            <div class="currentSale">
+                <div class="currentSaleTitle">CSGO Idle</div>
+                <div class="currentSaleCopies">1,000,000 copies sold</div>
+            </div>
+        </div> 
+    </div>
+
+    <div class="rightWrap">
+        <div class="finishedGameWrap">
+			<div class="finishedGame">
+				<div class="finishedGameText"><span class="finishedGameName">Game Dev</span>.</div>
+				<button class="closeFinishedGame">Release</button>
+        	</div>
+		</div>
+        
+        <div class="inDevGameStatus"> <!-- downed -->
+            <div class="inDevGameStatusLeft">
+                <i class="material-icons inDevArrow">keyboard_arrow_down</i>
+                <span class="inDevDevel" style="padding:4px;text-transform: uppercase;font-size: 14px;">In Development</span><div class="inDevGameStatusStage"></div>
+                <div class="inDevGameName"></div>
+            </div>
+            <div class="inDevGameStatusRight">
+                <div class="inDevGameReq"></div>
+            </div>
+            <div id="inDevProgress">
+                <div id="inDevBar"></div>
+            </div>
+        </div>
+        
+
+        
+        <div class="mainWindow window">
+            <div class="companyName">Linked Out</div>
+            <div class="fans">1000 fans</div>
+            <div class="currentWorkers">
+                
+                
+                
+            </div>
+            <div class="currentWorkersOv"></div>
+            <div class="inspectPcWindow window">
+                <div class="fa fa-times" id="closeInspectPc"></div>
+                <div class="inspectPcName title"></div>
+                <div class="inspectPcRows">
+                    <span>Case: </span><span class="currentCase"></span>
+                    <br>
+                    <select class="workerCase"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>Power Supply: </span><span class="currentPower"></span>
+                    <br>
+                    <select class="workerPower"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>Motherboard: </span><span class="currentMobo"></span>
+                    <br>
+                    <select class="workerMobo"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>CPU: </span><span class="currentCpu"></span>
+                    <br>
+                    <select class="workerCpu"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>RAM: </span><span class="currentRam"></span>
+                    <br>
+                    <select class="workerRam"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>Video Card: </span><span class="currentVcard"></span>
+                    <br>
+                    <select class="workerVcard"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                    <span>Harddrive: </span><span class="currentHard"></span>
+                    <br>
+                    <select class="workerHard"></select>
+                    <button class="replaceHarware">Replace</button>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="newGameWindow window">
+            <div class="title">New Game</div>
+            <div>Name:
+                <input type="text" id="newGameName">
+            </div>
+            <br>
+            <span class="selectLine">Platform: </span>
+            <select class="newGamePlatforms list leftAlign"></select>
+            <br>
+            <span class="selectLine">Genre: </span>
+            <select class="newGameGenreList list leftAlign"></select>
+            <br>
+            <span class="selectLine">Topic: </span>
+            <select class="newGameTopicsList list leftAlign"></select>
+            <div class="newGameFeaturesWrap">
+                <span class="selectLine">Engine: </span>
+                <select class="newGameEngines list leftAlign"></select>
+            </div>
+            <br>
+			<div class="newGameSize" id="newGameSize">Size:
+				<div class="sizeOption" data-size=0> Small </div>
+				<div class="sizeOption" data-size=1> Medium </div>
+				<div class="sizeOption" data-size=2> Big </div>
+			</div>
+			<br>
+            <div class="newGamePrice" id="newGamePrice">Price:
+				<div class="priceOption" data-price="1"> $0.99 </div>
+				<div class="priceOption" data-price="5"> $4.99 </div>
+				<div class="priceOption" data-price="10"> $9.99 </div>
+				<div class="priceOption" data-price="15"> $14.99 </div>
+				<div class="priceOption" data-price="20"> $19.99 </div>
+				<div class="priceOption" data-price="30"> $29.99 </div>
+				<div class="priceOption" data-price="60"> $59.99 </div>
+            </div>
+            <br>
+            <div>Estimated expenses:
+                <div class="newGameExpenses">0</div>
+            </div>
+            <br>
+            <button class="startDev">Start Development</button>
+        </div>
+        
+        
+        <div class="researchWindow window">
+            <div class="title">Research</div>
+            <div>What to research next?</div>
+            <br>
+            <div class="newResearch"></div>
+            <div class="newEngine">
+                <div class="title">New Engine:</div>
+                <div class="selectLine">Name:
+                    <input type="text" class="newEngineName leftAlign">
+                </div>
+                <div class="newEngineFeatures selectLine">
+                    <span>Graphics</span>
+                    <div class="leftAlign">
+                        <select class="newEngineGraphics list"></select>
+                        <div class="newEngineGraphicsDetails details"></div>
+                    </div>
+                    <br>
+                    <span>Code</span>
+                    <div class="leftAlign">
+                        <select class="newEngineCode list"></select>
+                        <div class="newEngineCodeDetails details"></div>
+                    </div>
+                    <br>
+                    <span>Artwork</span>
+                    <div class="leftAlign">
+                        <select class="newEngineArt list"></select>
+                        <div class="newEngineArtDetails details"></div>
+                    </div>
+                    <br>
+                    <span>Sound</span>
+                    <div class="leftAlign">
+                        <select class="newEngineAudio list"></select>
+                        <div class="newEngineAudioDetails details"></div>
+                    </div>
+                </div>
+                <br>
+                <span class="newEngineCost"></span>
+                <br>
+                <button class="newEngineCreate">Start developing</button>
+            </div>
+        </div>
+        <div class="upgradesWindow window">
+            <div class="title">Upgrades</div>
+            <div>Upgrades can unlock new genres or topics and can improve the quality of your games.</div>
+            <br>
+            <div class="newGenres">
+                <p>New genres:</p>
+            </div>
+        </div>
+        <div class="recruitWindow window">
+            <div class="title">Recruit</div>
+            <div>Who do you want to recruit?</div>
+            <br>
+            <div class="potentialWorkersList"></div>
+        </div>
+        <div class="shopWindow window">
+            <div class="title">Shop</div>
+            <div>You can buy platform licenses and new hardware from the shop.</div>
+            <p>New platforms:</p>
+            <div class="newPlatforms"></div>
+            <p>Hardware Shop</p>
+            <div class="newHardware"></div>
+        </div>
+        <div class="statsWindow window">
+            <div class="title">Stats</div>
+            <div>You have released <span class="statsGameCount">0</span> game(s) so far, making a total profit of $<span class="statsTotalProfit">0</span>.</div>
+            <br>
+            <div class="gameHistory list"></div>
+        </div>
+    </div>
+    <span class="version">0.0.13</span>
+</body>
+
+</html>

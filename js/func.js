@@ -15,6 +15,11 @@
 	var researchBits = 0;
 	var inDev = 0;
 	var inDevType = 'none';
+	var selling = [];
+	var sellingTime = [10, 20, 30]; //TODO: very temp, should be affected by the reviews
+	var fans = 1000;
+	
+	var paused = 0;
 
 	var games = [];
 	var inDevGame = {};
@@ -41,7 +46,7 @@
 	};
 	
 	var inDevEngine = {};
-	var newEngCode, newEngArt, newEngGraph, newEngAudio;
+	var newEngCode, newEngArt, newEngGraph, newEngAudio; //TODO: useless, remove those
 
 	var platforms = [1];
 
@@ -111,7 +116,7 @@
 							if(chance.weighted([1, 0], [75, 25])){
 								var factor = chance.floating({fixed: 2, min: 0.5, max: 1.1});
 								artBits += Math.floor(factor * workers[i].artPoints);
-								audioBits +=Math.floor(factor * workers[i].audioPoints);
+								audioBits += Math.floor(factor * workers[i].audioPoints);
 								
 								$(".newArt").text("+" + Math.floor(factor * workers[i].artPoints) + "AP");
 								$(".newAudio").text("+" + Math.floor(factor * workers[i].audioPoints) + "AuP");
@@ -165,8 +170,22 @@
 		}
 	}
 	
-	function getReviews(game){
-		
+	function getReview(game){
+		var artRating = game.art * 100 / engines[game.engine].art;
+		var codeRating = game.code * 100 / engines[game.engine].code;
+		var audioRating = game.audio * 100 / engines[game.engine].audio;
+		//TODO: each rating will have a different importance depending on the genre/topic
+		var baseReview = ((artRating + codeRating + audioRating) / 3);
+		var review = Math.ceil(baseReview / 10).toFixed(1);
+		return Math.ceil(baseReview / 10).toFixed(1);
+	}
+	
+	function resetContrib(){
+		for(i = 0; i < workers.length; i++){
+			workers[i].artContrib = 0;
+			workers[i].audioContrib = 0;
+			workers[i].codeContrib = 0;
+		}
 	}
 
 	//FUNCTIONS//MISC
@@ -221,85 +240,104 @@
 		updateHeader();
 
 		setInterval(function(){
-			_time += 10;
-			if(_time == 100){
-				_time = 10;
-				time++;
-				d++;
-				devTime ++;
-				if(inDev){
-					switch(inDevType){
-						case "game":
-							inDevGame.progress = (devTime * 100) / devTimes[inDevGame.size];
-							if(inDevGame.progress >= 100){
-								inDevGame.progress = 100;
+			if(!paused){
+				_time += 10;
+				if(_time == 100){
+					_time = 10;
+					time++;
+					d++;
+					devTime ++;
+					if(inDev){
+						switch(inDevType){
+							case "game":
+								inDevGame.progress = (devTime * 100) / devTimes[inDevGame.size];
+								if(inDevGame.progress >= 100){
+									inDevGame.progress = 100;
+									inDevGame.art = artBits;
+									inDevGame.code = codeBits;
+									inDevGame.audio = audioBits;
+									break;
+								}
+								gatherBits(inDevType);
+								updateHeader();
+								moveProgressBar(inDevGame.progress);
+								console.log(inDevGame.progress);
 								break;
-							}
-							gatherBits(inDevType);
-							updateHeader();
-							moveProgressBar(inDevGame.progress);
-							console.log(inDevGame.progress);
-							break;
-						case "engine":
-							gatherBits(inDevType);
-							inDevEngine.progress = (researchBits * 100) / inDevEngine.cost;
-							moveProgressBar(inDevEngine.progress);
-							break;
-						case "feature":
-							break;
-						default:
-							console.log("unhandled inDevType");
-							break;
-					}
+							case "engine":
+								gatherBits(inDevType);
+								inDevEngine.progress = (researchBits * 100) / inDevEngine.cost;
+								moveProgressBar(inDevEngine.progress);
+								break;
+							case "feature":
+								break;
+							default:
+								console.log("unhandled inDevType");
+								break;
+						}
 
-				}
-				//TODO: at == 100, time should pause until release is pressed
-				if(inDevEngine.progress >= 100){
-					$(".finishedGameWrap").fadeIn(100);
-					$(".finishedGameName").html(inDevEngine.name + "<br>(Engine)");
-					$(".inDevGameName").text("");
-					engines[engines.length] = inDevEngine;
-					inDevEngine = {};
-					inDev = 0;
-					inDevType = "none";
-					$(".inDevGameReq").empty();
-					moveProgressBar(0);
-				}
-				if(inDevGame.progress == 100){
-					$(".finishedGameWrap").fadeIn(100);
-					$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")");
-					inDev = 0;
-					inDevType = "none";
-					//TODO: reviews come here, to be added as an attribute
-					inDevGame.releaseDate = [y, m, d];
-					games[games.length] = inDevGame;
-					inDevGame = {};
-					$(".newGame").fadeIn(100);
-					$(".inDevGameName").text("");
-					$(".inDevGameStatusStage").empty();
-					moveProgressBar(0);
-				}
-				if(d > 30){
-					m++;
-					d = 1;
-					var totalSalary = 0;
-					for(i = 0; i < workers.length; i++){
-						totalSalary += workers[i].salary;
 					}
-					if(totalSalary){
-                        $.playSound("../res/monthlypayment");
-						$(".notif").text("-$" + totalSalary).fadeIn(100);
-						$(".noteWrapper").addClass("tgld");
-						setTimeout(function(){
-							$(".noteWrapper").removeClass("tgld");
-                            $(".notif").empty().fadeOut();
-						}, 5000);
+					//TODO: at == 100, time should pause until release is pressed
+					if(inDevEngine.progress >= 100){
+						$(".finishedGameWrap").fadeIn(0);
+						$(".finishedGameName").html(inDevEngine.name + "<br>(Engine)");
+						$(".inDevGameName").text("");
+						engines[engines.length] = inDevEngine;
+						inDevEngine = {};
+						inDev = 0;
+						inDevType = "none";
+						$(".inDevGameReq").empty();
+						moveProgressBar(0);
+						paused = 1;
 					}
+					if(inDevGame.progress == 100){
+						$(".finishedGameWrap").fadeIn(0);
+						$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")<br>" + getReview(inDevGame));
+						inDev = 0;
+						inDevType = "none";
+						//TODO: reviews come here, to be added as an attribute
+						inDevGame.releaseDate = [y, m, d];
+						games[games.length] = inDevGame;
+						selling.push(games.length - 1);
+						games[games.length - 1].sellTime = sellingTime[games[games.length - 1].size];
+						inDevGame = {};
+						$(".newGame").fadeIn(0);
+						$(".inDevGameName").text("");
+						$(".inDevGameStatusStage").empty();
+						moveProgressBar(0);
+						paused = 1;
+					}
+					if(selling.length){
+						for(i = 0; i < selling.length; i++){
+							games[selling[i]].sellTime --;
+							money += games[selling[i]].price * fans;
+							updateHeader();
+							if(games[selling[i]].sellTime <= 0) {
+								selling.splice(i, 1);
+							}
+						}
+					}
+					if(d > 30){
+						m++;
+						d = 1;
+						var totalSalary = 0;
+						for(i = 0; i < workers.length; i++){
+							totalSalary += workers[i].salary;
+						}
+						if(totalSalary){
+							//$.playSound("../res/monthlypayment");
+							$(".notif").text("-$" + totalSalary).fadeIn(0);
+							$(".noteWrapper").addClass("tgld");
+							setTimeout(function(){
+								$(".noteWrapper").removeClass("tgld");
+								$(".notif").empty().fadeOut();
+							}, 5000);
+						}
+					}
+					if(m > 12){y++; m = 1; d = 1;}
+					$(".time").text(zeroPad(d, 2) + "." + zeroPad(m, 2) + "." + zeroPad(y, 4));
 				}
-				if(m > 12){y++; m = 1; d = 1;}
-				$(".time").text(zeroPad(d, 2) + "." + zeroPad(m, 2) + "." + zeroPad(y, 4));
+				moveTime(_time);
 			}
-			moveTime(_time);
 		}, 250);
 		
 		$(".expandLeftMenu").click(function(){
@@ -308,7 +346,7 @@
 
 		$(".main").click(function(){
 			$(".window").fadeOut(0);
-			$(".mainWindow").fadeIn(100);
+			$(".mainWindow").fadeIn(0);
 
 			$(".currentWorkers").empty();
 
@@ -318,7 +356,7 @@
 		});
 
 		$(document).on("click", ".inspectPc", function(){
-			$(".inspectPcWindow").fadeIn(100);
+			$(".inspectPcWindow").fadeIn(0);
 
 			var currentWorker = parseInt($(this).attr("data-workerPcId"));
 			$(".inspectPcName").text(workers[currentWorker].fullName);
@@ -350,7 +388,7 @@
 
 		$(".newGame").click(function(){
 			$(".window").fadeOut(0);
-			$(".newGameWindow").fadeIn(100);
+			$(".newGameWindow").fadeIn(0);
 
 			$(".featWrap").empty();
 			$(".list").empty();
@@ -388,6 +426,7 @@
 			inDev = 1;
 			inDevType = "game";
 			devTime = 0;
+			resetContrib();
 			var newGameEngine = 0; //TEMP
 			inDevGame = {
 				name: document.getElementById("newGameName").value,
@@ -397,9 +436,6 @@
 				topic: $(".newGameTopicsList option:selected").val(),
 				progress: 0,
 				engine: newGameEngine,
-				minCode: engines[newGameEngine].minCode,
-				minArt: engines[newGameEngine].minArt,
-				minAudio: engines[newGameEngine].minAudio,//TODO: remove the minimum system, instead reviews are based on how good the genre/topics etc are matched
 				releaseDate: 0
 				/* subjComp: newGameSubjComp,
                 graphics: newGameGraphics,
@@ -426,12 +462,13 @@
 		});
 
 		$(".closeFinishedGame").click(function(){
-			$(".finishedGameWrap").fadeOut(100); 
+			$(".finishedGameWrap").fadeOut(100);
+			paused = 0;
 		});
 
 		$(".research").click(function(){
 			$(".window").fadeOut(0);
-			$(".researchWindow").fadeIn(100);
+			$(".researchWindow").fadeIn(0);
 
 			$(".newResearch").empty();
 			$(".list").empty();
@@ -541,7 +578,7 @@
 
 		$(".upgrades").click(function(){
 			$(".window").fadeOut(0);
-			$(".upgradesWindow").fadeIn(100);
+			$(".upgradesWindow").fadeIn(0);
 
 			$(".newGenres").empty();
 
@@ -598,7 +635,7 @@
 				};
 			}
 			for(i = 0; i < 6; i++){
-				$(".potentialWorkersList").append("<div class='potentialWorker'><div class='potentialWorkerAvatar' style='background-color:" + potentialWorkers[i].avatar + "'></div><div class='potentialWorkerInfo'><b>" + potentialWorkers[i].firstName + " " + potentialWorkers[i].lastName + "<br>" + potentialWorkers[i].age + " (" + potentialWorkers[i].gender + ")" + "<br>Coding: " + potentialWorkers[i].codePoints + "<br>Art: " + potentialWorkers[i].artPoints + "<br>Audio: " + potentialWorkers[i].audioPoints + "<br>Salary: $" + potentialWorkers[i].salary + "<br><button class='recruitButton' data-recruitId='" + i + "'>Recruit</button></div></div>");
+				$(".potentialWorkersList").append("<div class='potentialWorker'><div class='potentialWorkerAvatar' style='background-color:" + potentialWorkers[i].avatar + "'></div><div class='potentialWorkerInfo'><b>" + potentialWorkers[i].firstName + " " + potentialWorkers[i].lastName + "</b><br>" + potentialWorkers[i].age + " (" + potentialWorkers[i].gender + ")" + "<br>Coding: " + potentialWorkers[i].codePoints + "<br>Art: " + potentialWorkers[i].artPoints + "<br>Audio: " + potentialWorkers[i].audioPoints + "<br>Salary: $" + potentialWorkers[i].salary + "<br><button class='recruitButton' data-recruitId='" + i + "'>Recruit</button></div></div>");
 			}
 		});
 
@@ -613,7 +650,7 @@
 
 		$(".shop").click(function(){
 			$(".window").fadeOut(0);
-			$(".shopWindow").fadeIn(100);
+			$(".shopWindow").fadeIn(0);
 			$(".newHardware").empty();
 
 			var xx = hardwareDb().get();
@@ -630,7 +667,7 @@
 
 		$(".stats").click(function(){
 			$(".window").fadeOut(0);
-			$(".statsWindow").fadeIn(100);
+			$(".statsWindow").fadeIn(0);
 			$(".list").empty();
 
 			$(".statsGameCount").text(games.length);      

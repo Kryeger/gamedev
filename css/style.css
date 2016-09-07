@@ -1134,3 +1134,24 @@ option:selected{
     background: pink;
 }
 
+
+.linkedout {
+    position: fixed;
+    bottom: 20px;
+    right: 2px;
+    height: 30px;
+    width: 30px;
+    background-image: url("../res/linkedout.png");
+    background-size: 30px 30px;
+    filter: grayscale(100%);
+    opacity: 0.4;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px #dcdcdc;
+    transform: translateX(-24%);
+    transition: all 0.3s;
+}
+.linkedout:hover{
+    opacity: 1;
+    filter: grayscale(0);
+}

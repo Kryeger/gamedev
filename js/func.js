@@ -287,11 +287,8 @@
 						totalSalary += workers[i].salary;
 					}
 					if(totalSalary){
-<<<<<<< HEAD
                         $.playSound("../res/monthlypayment");
                         console.log("yolo");
-=======
->>>>>>> origin/master
 						$(".notif").text("-$" + totalSalary).fadeIn(100);
 						$(".noteWrapper").addClass("tgld");
 						setTimeout(function(){

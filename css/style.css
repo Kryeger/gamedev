@@ -11,9 +11,12 @@ button{
 }
 
 select {
-	font-family: 'Roboto', sans-serif;
+	/*font-family: 'Roboto', sans-serif;
 	font-size: 16px;
-	height: 30px;
+	height: 30px;*/
+}
+select:focus{
+    outline: none;
 }
 
 
@@ -100,6 +103,9 @@ select {
 
 .newGameWindow {
 	display: none;
+    background: white;
+    box-shadow: 0 0 0 1px #dcdcdc;
+    padding: 10px;
 }
 
 .hidden {
@@ -545,15 +551,26 @@ select {
 }
 
 .leftAlign {
-	display: inline-block;
+	/*display: inline-block;
 	position: absolute;
-	left: 5%;
+	left: 5%;*/
 }
 
 .title {
+    position: relative;
 	padding: 4px;
-	padding-bottom: 8px;
 	font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 20px;
+}
+.title:after{
+    content: "";
+    position: absolute;
+    width: 70px;
+    height: 1px;
+    background: #dcdcdc;
+    bottom: 10px;
+    left: 0;
 }
 
 .finishedGameText {
@@ -601,11 +618,10 @@ select {
 }
 
 .selectLine {
-	line-height: 30px;
 }
 
 .list {
-	min-width: 200px;
+	/*min-width: 200px;*/
 }
 
 .priceOption {
@@ -971,4 +987,45 @@ select {
     background: #6cc0e5;
     color: white;
     box-shadow: 0 0 0 1px white;
+}
+
+input:focus{
+    outline: none;
+}
+.divLabel label{
+    font-size: 12px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: 600;
+    color: rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    background: #dcdcdc;
+    float: left;
+    padding: 5px 10px;
+}
+.divLabel input{
+    background: none;
+    border: 0;
+    box-shadow: 0 0 0 1px #dcdcdc;
+    padding: 5px;
+    font-size: 12px;
+}
+
+.divLabel select{
+    font-size: 12px;
+    padding: 4px;
+    border: 0;
+    height: auto;
+    box-shadow: 0 0 0 1px #dcdcdc;
+}
+.divLabel option{
+    color: rgba(0,0,0,0.9);
+    padding: 5px;
+    font-weight: 600;
+    line-height: 30px;
+}
+
+.divLabel {
+    display: block;
+    margin-bottom: 5px;
 }

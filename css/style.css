@@ -1045,7 +1045,8 @@ input:focus{
     border: 0;
     box-shadow: 0 0 0 1px #dcdcdc;
     padding: 5px;
-    width: 190px;
+    padding-left: 8px;
+    width: 187px;
     font-size: 12px;
 }
 
@@ -1144,7 +1145,7 @@ option:selected{
     background-image: url("../res/linkedout.png");
     background-size: 30px 30px;
     filter: grayscale(100%);
-    opacity: 0.4;
+    opacity: 0.5;
     border-radius: 50%;
     overflow: hidden;
     box-shadow: 0 0 0 1px #dcdcdc;

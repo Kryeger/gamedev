@@ -22,7 +22,7 @@
 	var inDev = 0;
 	var inDevType = 'none';
 	var selling = [];
-	var sellingTime = [100, 20, 30]; //TODO: very temp, should be affected by the reviews
+	var sellingTime = [10, 20, 30]; //TODO: very temp, should be affected by the reviews
 	var fans = 1000;
 	
 	var paused = 0;
@@ -535,6 +535,17 @@
 			document.getElementById("newGameSize").setAttribute("data-size", $(this).attr("data-size"));
 			$(".sizeOption").removeClass("selectedSize");
 			$(this).addClass("selectedSize");
+			$(".priceOption").remove();
+			switch($(this).attr("data-size").toString()){
+				case "0":
+					$(".newGamePrice").append("<div class='priceOption' data-price='1'> $0.99 </div><div class='priceOption' data-price='5'> $4.99 </div><div class='priceOption' data-price='10'> $9.99 </div>");
+					break;
+				case "1":
+					$(".newGamePrice").append("<div class='priceOption' data-price='15'> $14.99 </div><div class='priceOption' data-price='20'> $19.99 </div><div class='priceOption' data-price='30'> $29.99 </div>");
+					break;
+				case "2":
+					$(".newGamePrice").append("<div class='priceOption' data-price='40'> $39.99 </div><div class='priceOption' data-price='50'> $49.99 </div><div class='priceOption' data-price='60'> $59.99 </div>");
+			}
 		});
 
 		$(".closeFinishedGame").click(function(){

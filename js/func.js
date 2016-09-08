@@ -1,10 +1,16 @@
 (function (window, $) {
-
+	
 	//TODO: DEPARTAMENTS
 	//TODO: remove inspectPc when respective worker has been fired
 	//TODO: Implement game types: Normal, MMO(FTP, PTP), Sequel
 	//TODO: custom consoles
 	//TODO: tropes to be common within sequels
+
+	$.fn.digits = function(){ 
+		return this.each(function(){ 
+			$(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+		})
+	}
 
 	//VARS
 
@@ -50,16 +56,65 @@
 
 	var platforms = [1];
 
-	var genres = [{name: "Shooter", owned: 1}, {name: "Platformer", owned: 0}, {name: "Fighting", owned: 1}, {name: "Stealth", owned: 0}];
-	var topics = [{name: "Aliens", owned: 1}, {name: "Alternate History", owned: 1}, {name: "Amusement Park", owned: 0}];
+	var genres = [
+		{name: "Action", owned: 1},
+		{name: "Shooter", owned: 1},
+	  	{name: "Platformer", owned: 1},
+		{name: "Fighting", owned: 1},
+		{name: "Stealth", owned: 1},
+		{name: "Survival Horror", owned: 1},
+		{name: "Adventure", owned: 1},
+		{name: "RPG", owned: 1},
+		{name: "Simulation", owned: 1},
+		{name: "Strategy", owned: 1},
+		{name: "Casual", owned: 1},
+		{name: "Tabletop", owned: 1},
+		{name: "Educational", owned: 1},
+
+	];
+	var topics = [
+		{name: "Aliens", owned: 1},
+		{name: "Alternate History", owned: 1},
+		{name: "Amusement Park", owned: 1},
+		{name: "Animals", owned: 1},
+		{name: "Apocalypse", owned: 1},
+		{name: "City", owned: 1},
+		{name: "Crime", owned: 1},
+		{name: "Fantasy", owned: 1},
+		{name: "Fashion", owned: 1},
+		{name: "Flying", owned: 1},
+		{name: "Detective", owned: 1},
+		{name: "Dungeon", owned: 1},
+		{name: "Dystopian", owned: 1},
+		{name: "Medical", owned: 1},
+		{name: "Military", owned: 1},
+		{name: "Mythology", owned: 1},
+		{name: "Naval", owned: 1},
+		{name: "Ninja", owned: 1},
+		{name: "Parkour", owned: 1},
+		{name: "Pirate", owned: 1},
+		{name: "Police", owned: 1},
+		{name: "Racing", owned: 1},
+		{name: "Robot", owned: 1},
+		{name: "School", owned: 1},
+		{name: "Sci-Fi", owned: 1},
+		{name: "Space", owned: 1},
+		{name: "Sports", owned: 1},
+		{name: "Spy", owned: 1},
+		{name: "Superheroes", owned: 1},
+		{name: "Time Travel", owned: 1},
+		{name: "Vampires", owned: 1},
+		{name: "Zombie", owned: 1},
+	];
+	
 	var sizes = [1, 1.5, 2.3];
 	var devTimes = [10, 225, 425];
 
 	var devTime = 0;
 
-	var compatibility = [[10 , 8 , 10],
-						 [8  , 10, 6 ],
-						 [10 , 8 , 6 ]];
+	var compatibility = [
+		[8, 8, 7, 6, 5, 10, 10, 8, 2, 7, 2, 3, 2], [6, 7, 1, 2, 6, 7, 6, 6, 2, 10, 1, 8, 6], [3, 1, 7, 1, 2, 6, 5, 5, 1, 10, 8, 4, 8], [3, 1, 7, 3, 1, 6, 10, 7, 4, 2, 10, 7, 10], [7, 6, 4, 4, 8, 10, 8, 7, 2, 6, 1, 2, 2], [2, 4, 1, 1, 1, 2, 8, 2, 1, 10, 4, 8, 2], [10, 10, 2, 6, 7, 9, 6, 4, 1, 8, 1, 1, 2], [2, 1, 7, 2, 1, 5, 10, 10, 2, 3, 4, 6, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 10, 3, 10], [6, 10, 3, 1, 5, 1, 10, 3, 10, 5, 7, 1, 7], [10, 9, 3, 2, 10, 9, 7, 3, 1, 1, 1, 4, 3], [2, 2, 6, 1, 5, 8, 7, 10, 1, 1, 3, 10, 1], [8, 8, 4, 3, 7, 10, 9, 8, 3, 5, 1, 7, 4], [4, 1, 1, 2, 1, 7, 3, 6, 10, 10, 6, 1, 10], [8, 10, 3, 8, 7, 4, 8, 7, 8, 10, 2, 1, 4], [6, 2, 3, 8, 2, 5, 8, 9, 2, 8, 3, 9, 7], [6, 8, 4, 1, 3, 5, 8, 6, 9, 10, 4, 7, 6], [8, 2, 7, 9, 10, 6, 8, 8, 1, 1, 1, 3, 5], [8, 2, 10, 9, 8, 4, 10, 2, 2, 1, 1, 1, 3], [8, 3, 5, 7, 2, 8, 9, 9, 3, 8, 1, 7, 5], [10, 10, 1, 8, 8, 8, 6, 2, 1, 4, 1, 1, 5], [6, 4, 1, 2, 1, 1, 6, 8, 10, 1, 8, 1, 8], [8, 10, 7, 8, 2, 8, 8, 8, 2, 6, 2, 3, 5], [2, 1, 4, 1, 2, 8, 8, 4, 1, 10, 7, 2, 10], [8, 6, 3, 7, 3, 9, 10, 7, 3, 6, 1, 4, 2], [3, 7, 1, 1, 1, 6, 10, 6, 10, 8, 2, 1, 7], [2, 1, 6, 8, 1, 1, 1, 1, 10, 8, 8, 1, 8], [9, 10, 3, 5, 10, 10, 4, 3, 2, 7, 1, 1, 3], [8, 6, 3, 10, 3, 2, 6, 3, 1, 1, 7, 7, 3], [6, 3, 5, 2, 7, 6, 10, 4, 6, 7, 3, 1, 4], [8, 2, 6, 6, 7, 10, 7, 8, 1, 1, 1, 5, 1], [8, 10, 3, 1, 10, 10, 6, 8, 1, 5, 1, 1, 1]
+	];
 
 	var potentialWorkers = [];
 	var workers = [];
@@ -174,10 +229,12 @@
 		var artRating = game.art * 100 / engines[game.engine].art;
 		var codeRating = game.code * 100 / engines[game.engine].code;
 		var audioRating = game.audio * 100 / engines[game.engine].audio;
+		var combo = 10 * compatibility[game.topic][game.genre];
 		//TODO: each rating will have a different importance depending on the genre/topic
-		var baseReview = ((artRating + codeRating + audioRating) / 3);
-		var review = Math.ceil(baseReview / 10).toFixed(1);
-		return Math.ceil(baseReview / 10).toFixed(1);
+		var baseReview = (((artRating + codeRating + audioRating) + combo) / 4);
+		var review = (baseReview / 10).toFixed(1);
+		if(review < 1.0) review = 1.0;
+		return review;
 	}
 	
 	function resetContrib(){
@@ -202,11 +259,11 @@
 	//FUNCTIONS//UI
 
 	function updateHeader(){
-		$(".money span").text(money);
-		$(".codeBits span").text(codeBits);
-		$(".artBits span").text(artBits);
-		$(".audioBits span").text(audioBits);
-		$(".researchBits span").text(researchBits);
+		$(".money span").text(Math.floor(money)).digits();
+		$(".codeBits span").text(codeBits).digits();
+		$(".artBits span").text(artBits).digits();
+		$(".audioBits span").text(audioBits).digits();
+		$(".researchBits span").text(researchBits).digits();
 	}
 
 	function moveProgressBar(procent){
@@ -219,10 +276,6 @@
 		if(procent > 100) procent = 100;
 		var _elem = document.getElementById("timeBar"); 
 		_elem.style.width = procent + '%';
-	}
-
-	function addCommas(z){
-		return toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 
 	function zeroPad(num, places){
@@ -261,7 +314,6 @@
 								gatherBits(inDevType);
 								updateHeader();
 								moveProgressBar(inDevGame.progress);
-								console.log(inDevGame.progress);
 								break;
 							case "engine":
 								gatherBits(inDevType);
@@ -290,15 +342,21 @@
 						paused = 1;
 					}
 					if(inDevGame.progress == 100){
+						inDevGame.review = getReview(inDevGame);
 						$(".finishedGameWrap").fadeIn(0);
-						$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")<br>" + getReview(inDevGame));
+						$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")<br>" + inDevGame.review);
 						inDev = 0;
 						inDevType = "none";
 						//TODO: reviews come here, to be added as an attribute
 						inDevGame.releaseDate = [y, m, d];
 						games[games.length] = inDevGame;
+						
 						selling.push(games.length - 1);
+						games[games.length - 1].copies = 0;
 						games[games.length - 1].sellTime = sellingTime[games[games.length - 1].size];
+						$(".currentSaleTitle").text(games[games.length - 1].name);
+						$(".currentSaleCopies").text(games[games.length - 1].copies + " copies sold");
+						
 						inDevGame = {};
 						$(".newGame").fadeIn(0);
 						$(".inDevGameName").text("");
@@ -309,10 +367,15 @@
 					if(selling.length){
 						for(i = 0; i < selling.length; i++){
 							games[selling[i]].sellTime --;
-							money += games[selling[i]].price * fans;
+							var soldCopies = fans * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review; //TODO: TEMP
+							money += games[selling[i]].price * soldCopies;
+							games[selling[i]].copies += Math.floor(soldCopies);
+							$(".currentSaleCopies").text(games[selling[i]].copies + " copies sold").digits();
 							updateHeader();
 							if(games[selling[i]].sellTime <= 0) {
 								selling.splice(i, 1);
+								$(".currentSaleCopies").empty();
+								$(".currentSaleTitle").empty();
 							}
 						}
 					}

@@ -22,7 +22,7 @@
 	var inDev = 0;
 	var inDevType = 'none';
 	var selling = [];
-	var sellingTime = [10, 20, 30]; //TODO: very temp, should be affected by the reviews
+	var sellingTime = [100, 20, 30]; //TODO: very temp, should be affected by the reviews
 	var fans = 1000;
 	
 	var paused = 0;
@@ -234,6 +234,7 @@
 		var baseReview = (((artRating + codeRating + audioRating) + combo) / 4);
 		var review = (baseReview / 10).toFixed(1);
 		if(review < 1.0) review = 1.0;
+		if(review > 10) review = 10;
 		return review;
 	}
 	
@@ -286,6 +287,15 @@
 	function updateEngineCost(){
 		newEngine.cost = newEngine.graphicsCost + newEngine.artCost + newEngine.audioCost + newEngine.codeCost;
 		$(".newEngineCost").html("Total Cost: " + newEngine.cost + "<img class='headerItem' title='RB' src='res/RB.png'>");
+	}
+	
+	function updateStats(){
+		$(".gameHistory").empty();
+		$(".statsGameCount").text(games.length);      
+
+		for(var j = 0; j < games.length; j++){
+			$(".gameHistory").append("<div class='releasedGameWrap'><div class='releasedGame'><div class='releasedGameName'>" + games[j].name + "</div><div class='releasedGameGenresTopics'>" + genres[games[j].genre].name + " | " + topics[games[j].topic].name + "</div><div class='releasedGameDate'>" + games[j].releaseDate[2] + "/" + games[j].releaseDate[1] + "/" + games[j].releaseDate[0] + "<br>" + games[j].copies + " copies sold</div></div></div>");
+		} 
 	}
 
 	$(document).ready(function(){
@@ -350,8 +360,9 @@
 						//TODO: reviews come here, to be added as an attribute
 						inDevGame.releaseDate = [y, m, d];
 						games[games.length] = inDevGame;
+						console.log(games);
 						
-						selling.push(games.length - 1);
+						selling[selling.length] = games.length - 1;
 						games[games.length - 1].copies = 0;
 						games[games.length - 1].sellTime = sellingTime[games[games.length - 1].size];
 						$(".currentSaleTitle").text(games[games.length - 1].name);
@@ -362,16 +373,18 @@
 						$(".inDevGameName").text("");
 						$(".inDevGameStatusStage").empty();
 						moveProgressBar(0);
+						updateStats();
 						paused = 1;
 					}
 					if(selling.length){
 						for(i = 0; i < selling.length; i++){
 							games[selling[i]].sellTime --;
-							var soldCopies = fans * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review; //TODO: TEMP
-							money += games[selling[i]].price * soldCopies;
+							var soldCopies = fans * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review;
 							games[selling[i]].copies += Math.floor(soldCopies);
+							money += games[selling[i]].price * soldCopies;
 							$(".currentSaleCopies").text(games[selling[i]].copies + " copies sold").digits();
 							updateHeader();
+							updateStats();
 							if(games[selling[i]].sellTime <= 0) {
 								selling.splice(i, 1);
 								$(".currentSaleCopies").empty();
@@ -736,7 +749,7 @@
 			$(".statsGameCount").text(games.length);      
 
 			for(i = 0; i < games.length; i++){
-				$(".gameHistory").append("<div class='releasedGameWrap'><div class='releasedGame'><div class='releasedGameName'>" + games[i].name + "</div><div class='releasedGameGenresTopics'>" + genres[games[i].genre].name + " | " + topics[games[i].topic].name + "</div><div class='releasedGameDate'>" + games[i].releaseDate[2] + "/" + games[i].releaseDate[1] + "/" + games[i].releaseDate[0] + "</div></div></div>");
+				$(".gameHistory").append("<div class='releasedGameWrap'><div class='releasedGame'><div class='releasedGameName'>" + games[i].name + "</div><div class='releasedGameGenresTopics'>" + genres[games[i].genre].name + " | " + topics[games[i].topic].name + "</div><div class='releasedGameDate'>" + games[i].releaseDate[2] + "/" + games[i].releaseDate[1] + "/" + games[i].releaseDate[0] + "<br>" + games[i].copies + " copies sold</div></div></div>");
 			} 
 		});
         

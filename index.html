@@ -127,44 +127,50 @@
             </div>
             <div class="currentWorkersOv"></div>
             <div class="inspectPcWindow window">
-                <div class="fa fa-times" id="closeInspectPc"></div>
+                <i class="material-icons" id="closeInspectPc">close</i>
                 <div class="inspectPcName title"></div>
                 <div class="inspectPcRows">
-                    <span>Case: </span><span class="currentCase"></span>
-                    <br>
+                    <div class="divLabel insPClabel">
+                    <label>Case: </label><span class="currentCase"></span>
                     <select class="workerCase"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>Power Supply: </span><span class="currentPower"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>Power Supply: </label><span class="currentPower"></span>
                     <select class="workerPower"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>Motherboard: </span><span class="currentMobo"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>Motherboard: </label><span class="currentMobo"></span>
                     <select class="workerMobo"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>CPU: </span><span class="currentCpu"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>CPU: </label><span class="currentCpu"></span>
                     <select class="workerCpu"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>RAM: </span><span class="currentRam"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>RAM: </label><span class="currentRam"></span>
                     <select class="workerRam"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>Video Card: </span><span class="currentVcard"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>Video Card: </label><span class="currentVcard"></span>
                     <select class="workerVcard"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
-                    <span>Harddrive: </span><span class="currentHard"></span>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
+                    
+                    <div class="divLabel insPClabel">
+                    <label>Harddrive: </label><span class="currentHard"></span>
                     <select class="workerHard"></select>
-                    <button class="replaceHarware">Replace</button>
-                    <br>
+                        <button class="replaceHarware"><i class="material-icons">swap_horiz</i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -221,74 +227,75 @@
         </div>
         
         
-        <div class="researchWindow window">
+        <div class="researchWindow window" style="display: none;">
             <div class="title">Research</div>
-            <div>What to research next?</div>
+            <div class="what2research">What to research next?</div>
             <br>
-            <div class="newResearch"></div>
+            <div class="newResearch clearfix"></div>
             <div class="newEngine">
                 <div class="title">New Engine:</div>
-                <div class="selectLine">Name:
-                    <input type="text" class="newEngineName leftAlign">
+                <div class="selectLine divLabel">
+                    <label>Name</label>
+                    <input type="text" class="newEngineName leftAlign" placeholder="Name the Engine">
                 </div>
                 <div class="newEngineFeatures selectLine">
-                    <span>Graphics</span>
-                    <div class="leftAlign">
+                    <div class="divLabel">
+                    <label>Graphics</label>
+                    <div class="leftAlign clearfix">
                         <select class="newEngineGraphics list"></select>
                         <div class="newEngineGraphicsDetails details"></div>
-                    </div>
-                    <br>
-                    <span>Code</span>
+                        </div></div>
+                    <div class="divLabel">
+                    <label>Code</label>
                     <div class="leftAlign">
                         <select class="newEngineCode list"></select>
                         <div class="newEngineCodeDetails details"></div>
-                    </div>
-                    <br>
-                    <span>Artwork</span>
+                        </div></div>
+                    <div class="divLabel">
+                    <label>Artwork</label>
                     <div class="leftAlign">
                         <select class="newEngineArt list"></select>
                         <div class="newEngineArtDetails details"></div>
-                    </div>
-                    <br>
-                    <span>Sound</span>
+                        </div></div>
+                    
+                        <div class="divLabel">
+                    <label>Sound</label>
                     <div class="leftAlign">
                         <select class="newEngineAudio list"></select>
                         <div class="newEngineAudioDetails details"></div>
-                    </div>
+                            </div></div>
                 </div>
-                <br>
                 <span class="newEngineCost"></span>
-                <br>
                 <button class="newEngineCreate">Start developing</button>
             </div>
         </div>
         <div class="upgradesWindow window">
             <div class="title">Upgrades</div>
-            <div>Upgrades can unlock new genres or topics and can improve the quality of your games.</div>
+            <div class="desc">Upgrades can unlock new genres or topics and can improve the quality of your games.</div>
             <br>
-            <div class="newGenres">
+            <div class="newGenres clearfix">
                 <p>New genres:</p>
             </div>
         </div>
         <div class="recruitWindow window">
             <div class="title">Recruit</div>
-            <div>Who do you want to recruit?</div>
+            <div class="desc">Who do you want to recruit?</div>
             <br>
             <div class="potentialWorkersList"></div>
         </div>
         <div class="shopWindow window">
             <div class="title">Shop</div>
-            <div>You can buy platform licenses and new hardware from the shop.</div>
-            <p>New platforms:</p>
-            <div class="newPlatforms"></div>
-            <p>Hardware Shop</p>
-            <div class="newHardware"></div>
+            <div class="desc">You can buy platform licenses and new hardware from the shop.</div>
+            <p class="shopTitle">New platforms:</p>
+            <div class="newPlatforms clearfix"></div>
+            <p class="shopTitle">Hardware Shop</p>
+            <div class="newHardware clearfix"></div>
         </div>
         <div class="statsWindow window">
             <div class="title">Stats</div>
-            <div>You have released <span class="statsGameCount">0</span> game(s) so far, making a total profit of $<span class="statsTotalProfit">0</span>.</div>
+            <div class="desc">You have released <span class="statsGameCount">0</span> game(s) so far, making a total profit of $<span class="statsTotalProfit">0</span>.</div>
             <br>
-            <div class="gameHistory list"></div>
+            <div class="gameHistory list clearfix"></div>
         </div>
     </div>
     <div class="linkedout"></div>

@@ -219,6 +219,7 @@ select:focus{
     background-color: white;
     -webkit-transition: all 0.3s;
     transition: all 0.3s;
+	line-height: 20px;
 }
 .researchNewResearch:hover{
     background-color: rgba(0,0,0,0.05);

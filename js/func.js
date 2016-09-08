@@ -525,7 +525,7 @@
 			$(".inDevGameStatusStage").text(" - Prototype (0%)");
 		});
 
-		$(".priceOption").click(function(){
+		$(document).on("click", ".priceOption", function(){
 			document.getElementById("newGamePrice").setAttribute("data-price", $(this).attr("data-price"));
 			$(".priceOption").removeClass("selectedPrice");
 			$(this).addClass("selectedPrice");

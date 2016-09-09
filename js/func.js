@@ -22,7 +22,6 @@
 	var inDev = 0;
 	var inDevType = 'none';
 	var selling = [];
-	var sellingTime = [10, 20, 30]; //TODO: very temp, should be affected by the reviews
 	var fans = 1000;
 	
 	var paused = 0;
@@ -108,7 +107,8 @@
 	];
 	
 	var sizes = [1, 1.5, 2.3];
-	var devTimes = [10, 225, 425];
+	var devTimes = [10, 30, 60]; //TODO: Game's size should affect these
+	var sellingTime = [10, 20, 30]; //TODO: very temp, should be affected by the reviews
 
 	var devTime = 0;
 
@@ -354,7 +354,26 @@
 					if(inDevGame.progress == 100){
 						inDevGame.review = getReview(inDevGame);
 						$(".finishedGameWrap").fadeIn(0);
-						$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")<br>" + inDevGame.review);
+						$(".finishedGameName").html(inDevGame.name + "<br>(" + genres[inDevGame.genre].name + " | " + topics[inDevGame.topic].name + ")");
+						var rev = getReview(inDevGame);
+						//TODO: fix this mess into a fn
+						var factor1 = rev * chance.floating({min: 0.8, max: 1.2});
+						if(factor1 > 10) factor1 = 10;
+						if(factor1 < 1) factor1 = 1;
+						var factor2 = rev * chance.floating({min: 0.8, max: 1.2});
+						if(factor2 > 10) factor2 = 10;
+						if(factor2 < 1) factor2 = 1;
+						var factor3 = rev * chance.floating({min: 0.8, max: 1.2});
+						if(factor3 > 10) factor3 = 10;
+						if(factor3 < 1) factor3 = 1;
+						var factor4 = rev * chance.floating({min: 0.8, max: 1.2});
+						if(factor4 > 10) factor4 = 10;
+						if(factor4 < 1) factor4 = 1;
+						
+ 						$(".review1Nr").text((factor1).toFixed(1));
+						$(".review2Nr").text((factor2).toFixed(1));
+						$(".review3Nr").text((factor3).toFixed(1));
+						$(".review4Nr").text((factor4).toFixed(1));
 						inDev = 0;
 						inDevType = "none";
 						//TODO: reviews come here, to be added as an attribute
@@ -578,7 +597,7 @@
 			for(i = 0; i < features.length; i++){
 				if(!features[i]) continue;
 				var xz = featuresDb({id: features[i]}).get();
-				$(".newEngine" + xz[0].domain).append("<option selected='selected' value='" + i + "'>" + xz[0].name + "</option><br>");
+				$(".newEngine" + xz[0].domain).append("<option selected='selected' value='" + features[i] + "'>" + xz[0].name + "</option><br>");
 				$(".newEngine" + xz[0].domain + "Details").text("(Cost: " + xz[0].points + "RP)");
 				newEngine["engine" + xz[0].domain + "Cost"] = xz[0].points;
 				updateEngineCost();
@@ -592,21 +611,25 @@
 			switch (xx[0].domain) {
 				case "Graphics":
 					newEngGraph = zz;
+					newEngine.graphicsCost = xx[0].points;
 					break;
 				case "Code":
 					newEngCode = zz;
+					newEngine.codeCost = xx[0].points;
 					break;
 				case "Art":
 					newEngArt = zz;
+					newEngine.artCost = xx[0].points;
 					break;
 				case "Audio":
 					newEngAudio = zz;
+					newEngine.audioCost = xx[0].points;
 					break;
 				default:
 					console.log("unhandled domain case");
 					break;
 			}
-			features.sort();
+			features.sort(function(a, b){return a-b});
 			$(this).remove();
 			updateEngineCost();
 			$(".research").trigger("click");
@@ -615,7 +638,7 @@
 		$(".newEngineGraphics").change(function(){                  //TODO: those 4 events should be only 1 
 			newEngGraph = parseInt($(this).val());
 			var xx = featuresDb({id: newEngGraph}).get();
-			newEnginegraphicsCost = xx[0].points;
+			newEngine.graphicsCost = xx[0].points;
 			updateEngineCost();
 			$(".newEngineGraphicsDetails").text(" (Cost: " + xx[0].points + "RP)");
 		});
@@ -623,7 +646,7 @@
 		$(".newEngineCode").change(function(){
 			newEngCode = parseInt($(this).val());
 			var xx = featuresDb({id: newEngCode}).get();
-			newEnginecodeCost = xx[0].points;
+			newEngine.codeCost = xx[0].points;
 			updateEngineCost();
 			$(".newEngineCodeDetails").text(" (Cost: " + xx[0].points + "RP)");
 		});

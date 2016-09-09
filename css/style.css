@@ -756,9 +756,9 @@ select:focus{
 
 .finishedGameWrap {
 	position: fixed;
+	display: none;
 	height: 100%;
 	width: 100%;
-	display: none;
 	top: 0;
 	left: 0;
 	background-color: rgba(250,250,250,0.7);
@@ -1331,4 +1331,33 @@ option:selected{
 .replaceHardware{
     display: inline-block;
     float:right;
+}
+
+.finishedGameBox {
+	position: absolute;
+	width: 100%;
+	font-size: 20px;
+	text-align: center;
+	padding: 8px;
+}
+
+.reviewLogo {
+	display: inline-block;
+	width: 20%;
+}
+
+.reviewNr {
+	display: inline-block;
+	width: 10%;
+	font-weight: bold;
+}
+
+.reviewQuote {
+	display: inline-block;
+	width: 68%;
+}
+
+.finishedGameReviews {
+	position: relative;
+	width: 100%;
 }

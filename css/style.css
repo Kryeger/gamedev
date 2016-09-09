@@ -513,6 +513,7 @@ select:focus{
 	padding: 20px;
     box-sizing: border-box;
 	left: 50%;
+    -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 	top: 51px;
 	min-width: 55%;
@@ -523,11 +524,11 @@ select:focus{
 }
 
 .finishedGameName {
-	position: absolute;
+	position: relative;
+    display: block;
+    width: 100%;
 	font-weight: bold;
 	text-align: center;
-    top: 20px;
-    left: 50%;-webkit-transform: translateX(-50%);transform: translateX(-50%);
 }
 
 .closeFinishedGame {
@@ -1353,6 +1354,16 @@ option:selected{
     padding-right: 10px;
     margin-right: 10px;
 }
+.reviewLogo.review4Logo{
+    background-image: url("../res/reviews/stage.png");
+    background-repeat: no-repeat;
+    background-size: 101px 34px;
+}
+.review3Logo.reviewLogo{
+    background-image: url("../res/reviews/gspot.png");
+    background-size: 122px 34px;
+    background-repeat: no-repeat;
+}
 .reviewLogo.review2Logo{
     background-image: url("../res/reviews/ijn.png");
     background-size: 95px 34px;
@@ -1414,6 +1425,7 @@ option:selected{
     position: absolute;
     left: -5px;
     top: 50%;
+    -webkit-transform: translateY(-50%) rotate(-45deg);
     transform: translateY(-50%) rotate(-45deg);
     width: 8px;
     height: 8px;
@@ -1425,10 +1437,20 @@ option:selected{
 .finishedGameReviews {
 	position: relative;
 	width: 100%;
-    padding: 10px;
+    padding-right: 15px;
     box-sizing: border-box;
 }
 
 .realeaseButtWrap {
     height: 80px;
+}
+
+.finishedGameGenre {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.5);
 }

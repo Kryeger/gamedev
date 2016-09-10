@@ -22,7 +22,7 @@
 	var inDev = 0;
 	var inDevType = 'none';
 	var selling = [];
-	var fans = 1000;
+	var fans = 0;
 	
 	var paused = 0;
 
@@ -301,6 +301,7 @@
 	$(document).ready(function(){
 
 		updateHeader();
+		$(".fans").text(fans + " fans");
 
 		setInterval(function(){
 			if(!paused){
@@ -401,6 +402,13 @@
 							var soldCopies = fans * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review;
 							games[selling[i]].copies += Math.floor(soldCopies);
 							money += games[selling[i]].price * soldCopies;
+							if(games[selling[i]].review >= 5){
+								fans += Math.floor(fans/12 + soldCopies/1000);
+								$(".fans").text(fans + " fans");
+							} else if (games[selling[i]].review < 5){
+								fans -= Math.floor(soldCopies / 2000);
+								$(".fans").text(fans + " fans");
+							}
 							$(".currentSaleCopies").text(games[selling[i]].copies + " copies sold").digits();
 							updateHeader();
 							updateStats();

@@ -256,6 +256,18 @@
 		}
 		return true;
 	}
+	
+	function setDecelTimeout(callback, factor, times){
+		var internalCallback = function(t, counter){
+			return function(){
+				if (--t > 0){
+					window.setTimeout(internalCallback, ++counter * factor);
+					callback();
+				}
+			}
+		}(times, 0);
+		window.setTimeout(internalCallback, factor);
+	};
 
 	//FUNCTIONS//UI
 
@@ -371,10 +383,44 @@
 						if(factor4 > 10) factor4 = 10;
 						if(factor4 < 1) factor4 = 1;
 						
- 						$(".review1Nr").text((factor1).toFixed(1));
-						$(".review2Nr").text((factor2).toFixed(1));
-						$(".review3Nr").text((factor3).toFixed(1));
-						$(".review4Nr").text((factor4).toFixed(1));
+						$(".reviewNr").not(".review4Nr").empty();
+
+						var minNr = 1;
+						var maxNr = 10;
+						
+						setDecelTimeout(function(){
+							if(minNr < factor1) minNr += factor1/10;
+							if(maxNr > factor1) maxNr -= factor1/10;
+							$(".review1Nr").text((chance.floating({min: minNr, max: maxNr})).toFixed(1));
+						}, 20, 10);
+						
+						
+						setTimeout(function(){
+							$(".review1Nr").text((factor1).toFixed(1));
+							setDecelTimeout(function(){
+								$(".review2Nr").text((chance.floating({min: (factor2/2) + 1, max: 10})).toFixed(1));
+							}, 20, 10);
+						}, 1000);
+						
+						setTimeout(function(){
+							$(".review2Nr").text((factor2).toFixed(1));
+							setDecelTimeout(function(){
+								$(".review3Nr").text((chance.floating({min: (factor3/2) + 1, max: 10})).toFixed(1));
+							}, 20, 02);
+						}, 2000);
+						
+						setTimeout(function(){
+							$(".review3Nr").text((factor3).toFixed(1));
+							setDecelTimeout(function(){
+								$(".reviewStars").css("width", chance.floating({min: (factor4/2) + 1, max: 10}).toFixed(1) + "%");
+							}, 20, 10);
+						}, 3000);
+						
+						setTimeout(function(){
+							//$(".review4Nr").text((factor4).toFixed(1));
+							$(".reviewStars").css("width", ((factor4).toFixed(1) * 10) + "%");
+						}, 4000);
+						
 						inDev = 0;
 						inDevType = "none";
 						//TODO: reviews come here, to be added as an attribute
@@ -399,16 +445,20 @@
 					if(selling.length){
 						for(i = 0; i < selling.length; i++){
 							games[selling[i]].sellTime --;
-							var soldCopies = fans * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review;
+							var soldCopies = (fans + 1) * chance.floating({min:0.95, max: 1.25}) * games[selling[i]].review;
 							games[selling[i]].copies += Math.floor(soldCopies);
 							money += games[selling[i]].price * soldCopies;
+
+							console.log(games[selling[i]].review);
 							if(games[selling[i]].review >= 5){
 								fans += Math.floor(fans/12 + soldCopies/1000);
 								$(".fans").text(fans + " fans");
-							} else if (games[selling[i]].review < 5){
-								fans -= Math.floor(soldCopies / 2000);
+							}
+							if (games[selling[i]].review < 5){
+								fans += Math.floor(soldCopies / 2000);//TODO: these should be proportional with the history of games
 								$(".fans").text(fans + " fans");
 							}
+							
 							$(".currentSaleCopies").text(games[selling[i]].copies + " copies sold").digits();
 							updateHeader();
 							updateStats();
